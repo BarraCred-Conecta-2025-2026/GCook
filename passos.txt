@@ -1,0 +1,23 @@
+-- Criar um projeto MVC
+-- No terminal (Ctrl + ') digite:
+dotnet new mvc -o GCook
+
+-- Acessar a pasta do projeto
+cd GCook
+
+-- Executar o projeto
+dotnet watch run
+
+-- Para o projeto
+-- No terminal
+Ctrl + C
+
+-- Instalar os pacotes necessários
+dotnet add package Microsoft.EntityFrameworkCore --version 9.0.13
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 9.0.13
+dotnet add package Microsoft.EntityFrameworkCore.Tools --version 9.0.13
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 9.0.13
+dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore --version 9.0.13
+
+-- Criar a camada de dados
+
