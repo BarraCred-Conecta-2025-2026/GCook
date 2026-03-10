@@ -85,7 +85,7 @@ public class AppDbSeed
                 RoleId = roles[2].Id
             }
         };
-        builder.Entity<IdentityUserLogin<string>>().HasData(userRoles);
+        builder.Entity<IdentityUserRole<string>>().HasData(userRoles);
         #endregion
     
         #region Popular Categoria
@@ -216,6 +216,7 @@ public class AppDbSeed
                 Rendimento = 5,
                 TempoPreparo = "20 minutos",
                 Foto = "/img/receitas/1.jpg",
+                UsuarioId = usuarios[0].Id,
             }
         };
         builder.Entity<Receita>().HasData(receitas);
