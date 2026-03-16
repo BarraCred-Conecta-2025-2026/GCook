@@ -1,3 +1,7 @@
+@{
+    ViewData["MainClass"] =
+        ViewData["MainClass"] ?? "container";
+}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -36,7 +40,7 @@
         </div>
     </nav>
 
-    <main class="container">
+    <main class="@ViewData["MainClass"]">
         @RenderBody()
     </main>
 

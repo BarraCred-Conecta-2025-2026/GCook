@@ -33,6 +33,7 @@
 <div class="recipe-grid">
     @foreach (Receita receita in Model)
     {
+        <a asp-action="Receita" asp-route-id="@receita.Id" style="text-decoration: none;">
         <div class="recipe-card">
             <div class="card-img"
                  style="background-image: url('@receita.Foto');">
@@ -52,5 +53,6 @@
                 </div>
             </div>
         </div>
+        </a>
     }
 </div>
