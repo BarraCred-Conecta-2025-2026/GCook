@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using GCook.Models;
 using GCook.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GCook.Controllers;
 
