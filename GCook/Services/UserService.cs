@@ -1,26 +1,57 @@
 using System.Security.Claims;
+using GCook.Data;
 using GCook.Helpers;
 using GCook.Models;
 using GCook.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace GCook.Services;
 
 public class UserService : IUserService
 {
+    private readonly AppDbContext _context;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly SignInManager<Usuario> _signInManager;
     private readonly UserManager<Usuario> _userManager;
     private readonly ILogger<UserService> _logger;
 
     public UserService(
+        AppDbContext context,
+        IHttpContextAccessor httpContextAccessor,
         SignInManager<Usuario> signInManager,
         UserManager<Usuario> userManager,
         ILogger<UserService> logger
     )
     {
+        _context = context;
+        _httpContextAccessor = httpContextAccessor;
         _signInManager = signInManager;
         _userManager = userManager;
         _logger = logger;
+    }
+
+    public async Task<UsuarioVM> GetUsuarioLogado()
+    {
+        var userId = _httpContextAccessor.HttpContext.User
+            .FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null) return null;
+        var userAccount = await _userManager.FindByIdAsync(userId);
+        var usuario = await _context.Usuarios.SingleOrDefaultAsync(u => u.Id == userId);
+        var perfis = string.Join(", ", await _userManager.GetRolesAsync(userAccount));
+        var IsAdmin = await _userManager.IsInRoleAsync(userAccount, "Administrador");
+        UsuarioVM usuarioVM = new()
+        {
+            UsuarioId = userId,
+            Nome = usuario.Nome,
+            DataNascimento = usuario.DataNascimento,
+            Foto = usuario.Foto,
+            Email = userAccount.Email,
+            UserName = userAccount.UserName,
+            Perfil = perfis,
+            IsAdmin = IsAdmin
+        };
+        return usuarioVM;
     }
 
     public async Task<SignInResult> Login(LoginVM login)
@@ -41,7 +72,7 @@ public class UserService : IUserService
             _logger.LogInformation($"Usuário '{userName}' acessou o sistema");
         if (result.IsLockedOut)
             _logger.LogWarning($"Usuário '{userName}' foi bloqueado");
-        
+
         return result;
     }
 
